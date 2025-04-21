@@ -84,15 +84,21 @@ def assignmentsMatch(req: func.HttpRequest) -> func.HttpResponse:
             credential=AzureKeyCredential(os.environ["SEARCH_KEY"])
         )
 
-        results = search_client.search(search_query, top=5)
+        results = list(search_client.search(search_query, top=20))
+
+        max_score = results[0]['@search.score'] if results else 1.0
 
         jobs = []
         for doc in results:
+            raw_score = doc['@search.score']
+            match_percent = int((raw_score / max_score) * 100)  # normalize and round
+
             jobs.append({
                 "title": doc.get("title", ""),
                 "company": doc.get("company", ""),
                 "location": doc.get("location", ""),
                 "type": doc.get("type", ""),
+                "matchPercent": match_percent,
                 "logoUrl": doc.get("logoUrl", None)
             })
 
