@@ -15,7 +15,7 @@ from azure.identity import DefaultAzureCredential
 getAssignmentDetails = func.Blueprint()
 
 
-@getAssignmentDetails.route(route="getAssignmentDetails, auth_level=func.AuthLevel.FUNCTION")
+@getAssignmentDetails.route(route="getAssignmentDetails")
 def getAssignmentDetailsById(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Processing request to fetch assignment by job ID')
 
