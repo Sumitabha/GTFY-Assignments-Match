@@ -42,9 +42,9 @@ def getAssignmentDetailsById(req: func.HttpRequest) -> func.HttpResponse:
             f'DATABASE={database};'
             f'Encrypt=yes;'
             f'TrustServerCertificate=yes;'
-            f'Authentication=ActiveDirectoryAccessToken'
+            f'Authentication=ActiveDirectoryMSI'
         )
-        conn = pyodbc.connect(conn_str, attrs_before={1256: access_token})
+        conn = pyodbc.connect(conn_str)
         cursor = conn.cursor()
 
         # Parameterized query
