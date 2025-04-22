@@ -8,6 +8,12 @@ from azure.search.documents import SearchClient
 from azure.core.credentials import AzureKeyCredential
 import tempfile
 import json
+from getAssignmentDetails import getAssignmentDetails
+
+app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
+
+app.register_functions(getAssignmentDetails)
+
 
 def extract_resume_text(filepath):
     ext = os.path.splitext(filepath)[-1].lower()
@@ -37,9 +43,7 @@ def get_latest_resume_from_folder(blob_service_client, container_name, folder_pr
         raise FileNotFoundError(f"No files found in folder: {folder_prefix}")
 
     latest_blob = max(blobs, key=lambda b: b.last_modified)
-    return latest_blob.name
-
-app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
+    return latest_blob.name 
 
 @app.route(route="assignmentsMatch")
 def assignmentsMatch(req: func.HttpRequest) -> func.HttpResponse:

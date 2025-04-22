@@ -4,6 +4,7 @@
 
 azure-functions
 azure-ai-formrecognizer
+azure.identity
 azure-core
 openai
 requests
@@ -11,3 +12,4 @@ azure-storage-blob
 azure-search-documents
 PyMuPDF
 python-docx
+pyodbc
