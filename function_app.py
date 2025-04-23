@@ -74,7 +74,6 @@ def assignmentsMatch(req: func.HttpRequest) -> func.HttpResponse:
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"]
         )
 
-        # Use Azure OpenAI to extract relevant job info
         response = client.chat.completions.create(
             model=os.environ["AZURE_OPENAI_DEPLOYMENT"],
             messages=[
@@ -91,14 +90,21 @@ def assignmentsMatch(req: func.HttpRequest) -> func.HttpResponse:
             credential=AzureKeyCredential(os.environ["SEARCH_KEY"])
         )
 
-        results = list(search_client.search(search_query, top=20))
+        results = list(search_client.search(
+            search_query,
+            top=20,
+            highlight_fields="job_desc,req_skills",  # ✅ Enable highlights here
+            select="id,title,company,location,type"
+        ))
+
+        logging.info(f"Search returned {len(results)} results.")
 
         max_score = results[0]['@search.score'] if results else 1.0
 
         jobs = []
         for doc in results:
             raw_score = doc['@search.score']
-            match_percent = int((raw_score / max_score) * 100)  # normalize and round
+            match_percent = int((raw_score / max_score) * 100)
 
             jobs.append({
                 "id": doc.get("id", ""),
@@ -107,11 +113,12 @@ def assignmentsMatch(req: func.HttpRequest) -> func.HttpResponse:
                 "location": doc.get("location", ""),
                 "type": doc.get("type", ""),
                 "matchPercent": match_percent,
-                "logoUrl": doc.get("logoUrl", None)
+                "logoUrl": doc.get("logoUrl", None),
+                "highlights": doc.get("@search.highlights", {})  # ✅ Include highlights
             })
 
         return func.HttpResponse(
-            json.dumps(jobs),
+            json.dumps(jobs, indent=2),
             mimetype="application/json",
             status_code=200
         )
