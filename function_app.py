@@ -10,11 +10,13 @@ import tempfile
 import json
 from getAssignmentDetails import getAssignmentDetails
 from uploadToBlobStorage import uploadToBlobStorage
+from getFilesFromBlobStorage import getFilesFromBlobStorage
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 app.register_functions(getAssignmentDetails)
 app.register_functions(uploadToBlobStorage)
+app.register_functions(getFilesFromBlobStorage)
 
 def extract_resume_text(filepath):
     ext = os.path.splitext(filepath)[-1].lower()
