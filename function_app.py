@@ -11,12 +11,14 @@ import json
 from getAssignmentDetails import getAssignmentDetails
 from uploadToBlobStorage import uploadToBlobStorage
 from getFilesFromBlobStorage import getFilesFromBlobStorage
+from enhanceCV import enhanceCV
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 app.register_functions(getAssignmentDetails)
 app.register_functions(uploadToBlobStorage)
 app.register_functions(getFilesFromBlobStorage)
+app.register_functions(enhanceCV)
 
 def extract_resume_text(filepath):
     ext = os.path.splitext(filepath)[-1].lower()
