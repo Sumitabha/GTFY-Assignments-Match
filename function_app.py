@@ -101,6 +101,7 @@ def assignmentsMatch(req: func.HttpRequest) -> func.HttpResponse:
             match_percent = int((raw_score / max_score) * 100)  # normalize and round
 
             jobs.append({
+                "id": doc.get("id", ""),
                 "title": doc.get("title", ""),
                 "company": doc.get("company", ""),
                 "location": doc.get("location", ""),
