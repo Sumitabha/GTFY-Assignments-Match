@@ -9,11 +9,12 @@ from azure.core.credentials import AzureKeyCredential
 import tempfile
 import json
 from getAssignmentDetails import getAssignmentDetails
+from uploadToBlobStorage import uploadToBlobStorage
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 app.register_functions(getAssignmentDetails)
-
+app.register_functions(uploadToBlobStorage)
 
 def extract_resume_text(filepath):
     ext = os.path.splitext(filepath)[-1].lower()
