@@ -220,7 +220,8 @@ def assignmentsMatch(req: func.HttpRequest) -> func.HttpResponse:
             query_caption="extractive",
             query_answer="extractive",
             highlight_fields="req_skills, key_responsibilities, job_desc",
-            select=["id", "title", "company", "location", "type", "gtd_id", "req_skills", "key_responsibilities"]
+            select=["id", "title", "company", "location", "type", "gtd_id", "req_skills", "key_responsibilities"],
+            top=30
         ))
 
         global_max_score = max((doc["@search.score"] for doc in results), default=1.0)

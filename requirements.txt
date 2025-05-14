@@ -3,7 +3,7 @@
 # Manually managing azure-functions-worker may cause unexpected issues
 
 azure-functions
-azure-ai-formrecognizer
+azure-ai-documentintelligence
 azure.identity
 azure-core
 openai
