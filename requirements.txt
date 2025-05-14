@@ -13,3 +13,5 @@ azure-search-documents
 PyMuPDF
 python-docx
 pyodbc
+tiktoken
+langchain
